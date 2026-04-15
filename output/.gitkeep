@@ -1,0 +1,5 @@
+# Output Directory
+
+Generated AI news digest reports will be saved here.
+
+Reports are named with the format: `ai-news-YYYY-MM-DD.md`
