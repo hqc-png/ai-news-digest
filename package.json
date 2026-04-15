@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "tsx src/index.ts",
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch src/index.ts",
+    "build": "cd web && npm install && npm run build",
+    "install-web": "cd web && npm install"
   },
   "keywords": [
     "ai",
