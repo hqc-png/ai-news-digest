@@ -2,29 +2,38 @@
 // Search bar component with hybrid search support
 ---
 
-<div class="bg-white rounded-lg shadow-sm p-4 mb-6">
-  <div class="flex space-x-3">
-    <input
-      type="text"
-      id="searchInput"
-      placeholder="搜索文章标题或内容..."
-      class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-    />
+<div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 mb-8 border border-gray-200/50">
+  <div class="flex flex-col md:flex-row md:items-center space-y-3 md:space-y-0 md:space-x-3">
+    <div class="relative flex-1">
+      <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl">
+        🔍
+      </span>
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="搜索文章标题或内容... (按 Enter 搜索)"
+        class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 text-gray-700 placeholder-gray-400"
+      />
+    </div>
     <button
       id="searchButton"
-      class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500"
+      class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:shadow-lg transition-all duration-300 font-medium flex items-center justify-center space-x-2 transform hover:scale-105"
     >
-      搜索
+      <span>🔎</span>
+      <span>搜索</span>
     </button>
     <button
       id="clearButton"
-      class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition focus:outline-none focus:ring-2 focus:ring-gray-400"
+      class="px-6 py-3 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition-all duration-300 font-medium flex items-center justify-center space-x-2 transform hover:scale-105"
     >
-      清除
+      <span>🔄</span>
+      <span>清除</span>
     </button>
   </div>
   <div id="searchResults" class="mt-4 hidden">
-    <p class="text-sm text-gray-600" id="resultCount"></p>
+    <div class="bg-blue-50 border border-blue-200 rounded-xl p-3">
+      <p class="text-sm text-blue-700 font-medium" id="resultCount"></p>
+    </div>
   </div>
 </div>
 

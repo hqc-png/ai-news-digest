@@ -11,7 +11,7 @@ const {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
@@ -19,17 +19,33 @@ const {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <style is:global>
+      @import '../styles/global.css';
+    </style>
   </head>
-  <body class="bg-gray-50 min-h-screen">
-    <header class="bg-white shadow-sm">
+  <body class="bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50 min-h-screen">
+    <!-- Header with glassmorphism effect -->
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-white/80 shadow-lg border-b border-gray-200/50">
       <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div class="flex justify-between items-center">
-          <a href="/" class="flex items-center space-x-2">
-            <span class="text-2xl font-bold text-blue-600">🤖 AI News Digest</span>
+          <a href="/" class="flex items-center space-x-3 group">
+            <span class="text-3xl">🤖</span>
+            <div>
+              <span class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                AI News Digest
+              </span>
+              <p class="text-xs text-gray-500">智能新闻聚合平台</p>
+            </div>
           </a>
-          <div class="flex space-x-4">
-            <a href="/" class="text-gray-700 hover:text-blue-600 transition">首页</a>
-            <a href="/api/trigger-cron" class="text-gray-700 hover:text-blue-600 transition">更新</a>
+          <div class="flex space-x-6">
+            <a href="/" class="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium">
+              <span>🏠</span>
+              <span>首页</span>
+            </a>
+            <a href="/api/trigger-cron" class="flex items-center space-x-1 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all duration-300 font-medium">
+              <span>🔄</span>
+              <span>更新</span>
+            </a>
           </div>
         </div>
       </nav>
@@ -39,9 +55,12 @@ const {
       <slot />
     </main>
 
-    <footer class="bg-white border-t mt-12">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-gray-600">
-        <p>Built with Astro + Cloudflare | Powered by AI</p>
+    <footer class="bg-white/80 backdrop-blur-md border-t border-gray-200/50 mt-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="text-center">
+          <p class="text-gray-600 mb-2">Built with ❤️ using Astro + Cloudflare</p>
+          <p class="text-sm text-gray-500">Powered by AI | Open Source</p>
+        </div>
       </div>
     </footer>
   </body>
