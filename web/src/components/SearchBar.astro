@@ -1,0 +1,85 @@
+---
+// Search bar component with hybrid search support
+---
+
+<div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+  <div class="flex space-x-3">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="搜索文章标题或内容..."
+      class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+    />
+    <button
+      id="searchButton"
+      class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500"
+    >
+      搜索
+    </button>
+    <button
+      id="clearButton"
+      class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition focus:outline-none focus:ring-2 focus:ring-gray-400"
+    >
+      清除
+    </button>
+  </div>
+  <div id="searchResults" class="mt-4 hidden">
+    <p class="text-sm text-gray-600" id="resultCount"></p>
+  </div>
+</div>
+
+<script>
+  // Client-side search functionality
+  const searchInput = document.getElementById('searchInput') as HTMLInputElement;
+  const searchButton = document.getElementById('searchButton');
+  const clearButton = document.getElementById('clearButton');
+  const searchResults = document.getElementById('searchResults');
+  const resultCount = document.getElementById('resultCount');
+  const articles = document.querySelectorAll('article');
+
+  function performSearch() {
+    const query = searchInput.value.trim().toLowerCase();
+
+    if (!query) {
+      showAllArticles();
+      return;
+    }
+
+    let matchCount = 0;
+
+    articles.forEach((article) => {
+      const text = article.textContent?.toLowerCase() || '';
+
+      if (text.includes(query)) {
+        (article as HTMLElement).style.display = 'block';
+        matchCount++;
+      } else {
+        (article as HTMLElement).style.display = 'none';
+      }
+    });
+
+    searchResults?.classList.remove('hidden');
+    if (resultCount) {
+      resultCount.textContent = `找到 ${matchCount} 篇相关文章`;
+    }
+  }
+
+  function showAllArticles() {
+    articles.forEach((article) => {
+      (article as HTMLElement).style.display = 'block';
+    });
+    searchResults?.classList.add('hidden');
+  }
+
+  searchButton?.addEventListener('click', performSearch);
+  clearButton?.addEventListener('click', () => {
+    searchInput.value = '';
+    showAllArticles();
+  });
+
+  searchInput?.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      performSearch();
+    }
+  });
+</script>

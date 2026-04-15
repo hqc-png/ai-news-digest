@@ -1,0 +1,51 @@
+---
+interface Props {
+  id: number;
+  title: string;
+  summary: string;
+  source: string;
+  date: Date;
+  url: string;
+}
+
+const { id, title, summary, source, date, url } = Astro.props;
+
+const formatDate = (d: Date) => {
+  return new Date(d).toLocaleString('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+};
+---
+
+<article class="bg-white rounded-lg shadow-sm hover:shadow-md transition p-6 mb-4">
+  <div class="flex justify-between items-start mb-3">
+    <h2 class="text-xl font-semibold text-gray-900 flex-1 pr-4">
+      <a href={url} target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 transition">
+        {title}
+      </a>
+    </h2>
+  </div>
+
+  <p class="text-gray-700 mb-4 leading-relaxed">
+    {summary}
+  </p>
+
+  <div class="flex justify-between items-center text-sm text-gray-500">
+    <div class="flex space-x-4">
+      <span class="flex items-center">
+        📰 <span class="ml-1">{source}</span>
+      </span>
+      <span class="flex items-center">
+        🕒 <span class="ml-1">{formatDate(date)}</span>
+      </span>
+    </div>
+    <a href={url} target="_blank" rel="noopener noreferrer"
+       class="text-blue-600 hover:text-blue-700 transition flex items-center">
+      阅读原文 →
+    </a>
+  </div>
+</article>
