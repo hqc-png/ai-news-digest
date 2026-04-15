@@ -18,10 +18,3 @@ export interface FetchResult {
   articles: Article[];
   error?: string;
 }
-
-export interface AIConfig {
-  provider: 'anthropic' | 'openai';
-  apiKey: string;
-  model?: string;
-  baseURL?: string;
-}

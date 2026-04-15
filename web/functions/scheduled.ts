@@ -4,7 +4,7 @@
  */
 
 import { RSS_SOURCES } from '../lib/sources';
-import { fetchAllFeeds } from '../lib/rss-fetcher';
+import { fetchAllFeeds } from '../lib/rss-fetcher-cloudflare';
 import { filterLast24Hours, sortByDateDesc } from '../lib/time-filter';
 import { summarizeArticles } from '../lib/ai-summarizer';
 import { getAIConfig } from '../lib/ai-config';
