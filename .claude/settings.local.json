@@ -26,7 +26,8 @@
       "Bash(file:*)",
       "Bash(curl -s \"http://localhost:4321/api/test-summarizer?mode=fallback\")",
       "Bash(curl:*)",
-      "Bash(limit=5 2>&1)"
+      "Bash(limit=5 2>&1)",
+      "Bash(ls:*)"
     ]
   }
 }

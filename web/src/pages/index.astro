@@ -18,97 +18,175 @@ const latestDate = articles.length > 0
 ---
 
 <Layout title="AI News Digest - 首页">
-  <!-- Hero Section -->
-  <div class="mb-12 text-center">
-    <h1 class="text-5xl md:text-6xl font-extrabold mb-4">
-      <span class="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-        AI 新闻聚合
-      </span>
-    </h1>
-    <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-      每日自动更新 AI 领域最新资讯，智能生成中文摘要
-    </p>
-    <div class="mt-6 flex justify-center items-center space-x-4 text-sm text-gray-500">
-      <span class="flex items-center space-x-1">
-        <span>⚡</span>
-        <span>实时更新</span>
-      </span>
-      <span>•</span>
-      <span class="flex items-center space-x-1">
-        <span>🤖</span>
-        <span>AI 摘要</span>
-      </span>
-      <span>•</span>
-      <span class="flex items-center space-x-1">
-        <span>🔍</span>
-        <span>全文搜索</span>
-      </span>
-    </div>
-  </div>
-
-  <!-- 统计信息 - 增强版 -->
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-    <div class="group bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 text-white transform hover:-translate-y-1">
-      <div class="text-4xl font-black mb-2">{totalCount}</div>
-      <div class="text-sm font-medium text-blue-100">📚 总文章数</div>
-    </div>
-    <div class="group bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 text-white transform hover:-translate-y-1">
-      <div class="text-4xl font-black mb-2">{articles.length}</div>
-      <div class="text-sm font-medium text-green-100">👀 当前显示</div>
-    </div>
-    <div class="group bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 text-white transform hover:-translate-y-1">
-      <div class="text-4xl font-black mb-2">{stats.length}</div>
-      <div class="text-sm font-medium text-purple-100">📰 新闻来源</div>
-    </div>
-    <div class="group bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 text-white transform hover:-translate-y-1">
-      <div class="text-sm font-bold mb-1 text-orange-100">🕐 最新更新</div>
-      <div class="text-xs font-medium text-orange-50">{latestDate}</div>
-    </div>
-  </div>
-
   <!-- 搜索栏 -->
-  <SearchBar />
+  <div class="mb-6">
+    <SearchBar />
+  </div>
 
-  <!-- 来源统计 - 增强版 -->
-  {stats.length > 0 && (
-    <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 mb-8 border border-gray-200/50">
-      <h3 class="font-bold text-gray-900 mb-4 flex items-center text-lg">
-        <span class="mr-2">📊</span>
-        来源分布
-      </h3>
-      <div class="flex flex-wrap gap-3">
-        {stats.map(stat => (
-          <button class="group px-4 py-2 bg-gradient-to-r from-blue-50 to-purple-50 hover:from-blue-100 hover:to-purple-100 text-blue-700 rounded-full text-sm font-medium transition-all duration-300 hover:shadow-md hover:scale-105 border border-blue-200/50">
-            <span class="font-semibold">{stat.source}</span>
-            <span class="ml-2 px-2 py-0.5 bg-blue-600 text-white rounded-full text-xs font-bold">{stat.count}</span>
-          </button>
-        ))}
+  <!-- 主内容区域：左右分栏布局 -->
+  <div class="flex flex-col lg:flex-row gap-6">
+    <!-- 左侧：文章列表（主内容区） -->
+    <div class="flex-1 lg:w-2/3">
+      <!-- 来源导航标签 -->
+      {stats.length > 0 && (
+        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm p-4 mb-4 border border-gray-200/50">
+          <div class="flex items-center space-x-2 overflow-x-auto pb-2">
+            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium whitespace-nowrap hover:bg-blue-700 transition">
+              全部 ({totalCount})
+            </button>
+            {stats.map(stat => (
+              <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium whitespace-nowrap hover:bg-gray-200 transition">
+                {stat.source} ({stat.count})
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- 文章列表 -->
+      <div class="space-y-4" id="articleList">
+        {articles.length === 0 ? (
+          <div class="text-center py-20 bg-white/80 backdrop-blur-sm rounded-xl shadow-sm">
+            <div class="text-6xl mb-4">📭</div>
+            <p class="text-gray-500 text-xl font-medium mb-2">暂无文章数据</p>
+            <p class="text-gray-400 text-sm">
+              点击顶部"🔄 更新"按钮抓取最新文章
+            </p>
+          </div>
+        ) : (
+          articles.map((article, index) => (
+            <ArticleCard
+              id={index + 1}
+              title={article.title}
+              summary={article.summary || '暂无摘要'}
+              source={article.source}
+              date={article.publishedAt}
+              url={article.link}
+            />
+          ))
+        )}
       </div>
     </div>
-  )}
 
-  <!-- 文章列表 - 增强版 -->
-  <div class="space-y-6" id="articleList">
-    {articles.length === 0 ? (
-      <div class="text-center py-20 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg">
-        <div class="text-6xl mb-4">📭</div>
-        <p class="text-gray-500 text-xl font-medium mb-2">暂无文章数据</p>
-        <p class="text-gray-400 text-sm">
-          点击顶部"🔄 更新"按钮抓取最新文章
-        </p>
+    <!-- 右侧：边栏（统计信息和推荐） -->
+    <aside class="lg:w-1/3">
+      <div class="sticky top-24 space-y-6">
+        <!-- 统计信息卡片 -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-200/50 overflow-hidden">
+          <div class="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-4">
+            <h3 class="text-white font-bold text-lg flex items-center">
+              <span class="mr-2">📊</span>
+              网站统计
+            </h3>
+          </div>
+          <div class="p-6 space-y-4">
+            <div class="flex items-center justify-between pb-4 border-b border-gray-200">
+              <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-2xl">
+                  📚
+                </div>
+                <div>
+                  <p class="text-sm text-gray-600">总文章数</p>
+                  <p class="text-2xl font-bold text-gray-900">{totalCount}</p>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between pb-4 border-b border-gray-200">
+              <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-2xl">
+                  👀
+                </div>
+                <div>
+                  <p class="text-sm text-gray-600">当前显示</p>
+                  <p class="text-2xl font-bold text-gray-900">{articles.length}</p>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between pb-4 border-b border-gray-200">
+              <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-2xl">
+                  📰
+                </div>
+                <div>
+                  <p class="text-sm text-gray-600">新闻来源</p>
+                  <p class="text-2xl font-bold text-gray-900">{stats.length}</p>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-2xl">
+                  🕐
+                </div>
+                <div>
+                  <p class="text-sm text-gray-600">最新更新</p>
+                  <p class="text-xs font-medium text-gray-700">{latestDate}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 来源分布卡片 -->
+        {stats.length > 0 && (
+          <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-200/50 overflow-hidden">
+            <div class="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-4">
+              <h3 class="text-white font-bold text-lg flex items-center">
+                <span class="mr-2">📊</span>
+                来源分布
+              </h3>
+            </div>
+            <div class="p-6">
+              <div class="space-y-3">
+                {stats.map((stat, index) => (
+                  <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                    <div class="flex items-center space-x-3">
+                      <span class="text-xl">
+                        {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '📌'}
+                      </span>
+                      <span class="font-medium text-gray-700">{stat.source}</span>
+                    </div>
+                    <span class="px-3 py-1 bg-blue-600 text-white rounded-full text-sm font-bold">
+                      {stat.count}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        <!-- 功能特性卡片 -->
+        <div class="bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
+          <h3 class="font-bold text-lg mb-4 flex items-center">
+            <span class="mr-2">✨</span>
+            平台特性
+          </h3>
+          <ul class="space-y-3 text-sm">
+            <li class="flex items-start space-x-2">
+              <span class="text-yellow-300">⚡</span>
+              <span>每日自动更新 AI 领域最新资讯</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-yellow-300">🤖</span>
+              <span>智能 AI 生成中文摘要</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-yellow-300">🔍</span>
+              <span>全文搜索快速定位内容</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-yellow-300">📱</span>
+              <span>响应式设计支持移动端</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-yellow-300">💰</span>
+              <span>完全免费开源使用</span>
+            </li>
+          </ul>
+        </div>
       </div>
-    ) : (
-      articles.map((article, index) => (
-        <ArticleCard
-          id={index + 1}
-          title={article.title}
-          summary={article.summary || '暂无摘要'}
-          source={article.source}
-          date={article.publishedAt}
-          url={article.link}
-        />
-      ))
-    )}
+    </aside>
   </div>
 
   <!-- 页脚说明 - 增强版 -->
