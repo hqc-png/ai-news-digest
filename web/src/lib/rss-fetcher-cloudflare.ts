@@ -63,16 +63,25 @@ function parseRSSXML(xmlText: string): RSSFeed {
 }
 
 /**
- * 去除 HTML 标签
+ * 去除 HTML 标签和 CDATA 包裹
  */
 function stripHTML(html: string): string {
-  return html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+  // 先去除 CDATA 包裹
+  let text = html.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1');
+  // 再去除 HTML 标签
+  text = text.replace(/<[^>]*>/g, '');
+  // 合并多余空格
+  text = text.replace(/\s+/g, ' ').trim();
+  return text;
 }
 
 /**
- * 解码 HTML 实体
+ * 解码 HTML 实体并去除 CDATA
  */
 function decodeHTML(html: string): string {
+  // 先去除 CDATA 包裹
+  let text = html.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1');
+
   const entities: Record<string, string> = {
     '&lt;': '<',
     '&gt;': '>',
@@ -80,9 +89,16 @@ function decodeHTML(html: string): string {
     '&quot;': '"',
     '&#39;': "'",
     '&nbsp;': ' ',
+    '&#x27;': "'",
+    '&#x2F;': '/',
   };
 
-  return html.replace(/&[^;]+;/g, (entity) => entities[entity] || entity);
+  text = text.replace(/&[^;]+;/g, (entity) => entities[entity] || entity);
+
+  // 再次去除可能残留的 HTML 标签
+  text = text.replace(/<[^>]*>/g, '');
+
+  return text.trim();
 }
 
 /**
