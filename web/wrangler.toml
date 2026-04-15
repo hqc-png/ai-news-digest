@@ -2,12 +2,12 @@ name = "ai-news-digest"
 compatibility_date = "2024-01-01"
 pages_build_output_dir = "./dist"
 
-# D1 数据库绑定（本地开发）
+# D1 数据库绑定
 [[d1_databases]]
 binding = "DB"
 database_name = "ai-digest"
-database_id = "local-db-id"  # 本地开发时可以是任意值
-preview_database_id = "local-db-id"
+database_id = "e790694f-8f3e-4415-b8c5-5730252b8470"  # 生产环境数据库 ID
+preview_database_id = "e790694f-8f3e-4415-b8c5-5730252b8470"  # 预览环境使用同一个数据库
 
 # Cron Triggers（定时任务）
 [triggers]
@@ -15,4 +15,4 @@ crons = ["0 9 * * *"]  # 每天 9:00 AM UTC
 
 # 环境变量
 [vars]
-ENVIRONMENT = "development"
+ENVIRONMENT = "production"
