@@ -1,0 +1,55 @@
+name: Backup Digest Task
+
+on:
+  schedule:
+    # 每天 9:30 AM UTC (比 Cloudflare Cron 晚 30 分钟)
+    - cron: '30 9 * * *'
+  workflow_dispatch:  # 支持手动触发
+
+jobs:
+  check-and-backup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check if Cloudflare Cron ran
+        id: check
+        run: |
+          echo "检查 Cloudflare Cron 是否在过去 2 小时内运行"
+          echo "如果未运行，则触发备份任务"
+          # 这里可以查询 D1 数据库最新文章时间
+          # 或调用 Cloudflare API 检查 Cron 状态
+          echo "should_run=false" >> $GITHUB_OUTPUT
+
+      - name: Run backup task
+        if: steps.check.outputs.should_run == 'true'
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          echo "备份任务：调用 Cloudflare Worker API 触发定时任务"
+          # 示例：curl -X GET https://your-app.pages.dev/api/trigger-cron
+          # 或直接运行 wrangler CLI：
+          # wrangler d1 execute ai-digest --remote --command "..."
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "备份任务执行失败，请检查日志"
+          # 可以发送通知到 Slack、Email 等
+
+  manual-trigger:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Manual trigger message
+        run: |
+          echo "手动触发备份任务"
+          echo "这个工作流可以在 GitHub Actions 页面手动运行"
+          echo "用于测试或紧急情况下的手动抓取"
