@@ -2,7 +2,24 @@
   "permissions": {
     "allow": [
       "WebSearch",
-      "WebFetch(domain:developers.cloudflare.com)"
+      "WebFetch(domain:developers.cloudflare.com)",
+      "Bash(npm create:*)",
+      "Bash(npx create-astro@4.x web --template minimal --install --no-git --typescript strict --skip-houston)",
+      "Bash(npx --yes create-astro@4.x web --template minimal --install --no-git --typescript strict --skip-houston --yes)",
+      "Bash(npm install:*)",
+      "Bash(mv web/web/* web/)",
+      "Bash(mv web/web/.* web/)",
+      "Bash(npx tailwindcss:*)",
+      "Bash(npm run:*)",
+      "Bash(curl -s http://localhost:4321)",
+      "Bash(git remote:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(wrangler --version)",
+      "Bash(npm list:*)",
+      "Bash(wrangler d1:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m 'feat: Configure Cloudflare D1 database:*)"
     ]
   }
 }
